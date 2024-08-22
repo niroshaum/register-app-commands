@@ -120,6 +120,8 @@ $ sudo vim /etc/systemd/system/sonar.service
 ## Install AWS Cli on the above EC2
 Refer--https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 $ sudo su
+$cd ~
+$pwd
 $ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 $ apt install unzip,   $ unzip awscliv2.zip
 $ sudo ./aws/install
@@ -148,7 +150,7 @@ $ eksctl version
 
 ## Setup Kubernetes using eksctl
 Refer--https://github.com/aws-samples/eks-workshop/issues/734
-$ eksctl create cluster --name virtualtechbox-cluster \
+$ eksctl create cluster --name nirosha-cluster \
 --region ap-south-1 \
 --node-type t2.small \
 --nodes 3 \  (min 3 nodes are required for this project)
