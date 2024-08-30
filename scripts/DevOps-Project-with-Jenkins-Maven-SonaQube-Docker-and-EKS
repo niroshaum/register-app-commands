@@ -1,4 +1,7 @@
-
+create  2 instance
+  # Jenkins-Master
+  #Jenkins-Agent
+Connect to MobaXterm
 ============================================================= Install and Configure the Jenkins-Master & Jenkins-Agent =============================================================
 ## Install Java
 $ sudo apt update
@@ -8,23 +11,58 @@ $ sudo init 6
 $ sudo apt install openjdk-17-jre
 $ java -version
 
-## Install Jenkins
+## Install Jenkins on the master node
 Refer--https://www.jenkins.io/doc/book/installing/linux/
 curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
+
 sudo apt-get update
 sudo apt-get install jenkins
-
 $ sudo systemctl enable jenkins       //Enable the Jenkins service to start at boot
 $ sudo systemctl start jenkins        //Start Jenkins as a service
 $ systemctl status jenkins
+
+##Install docker on the Agent node
+sudo apt-get install docker.io
+sudo usermod -aG docker $USER
+
+##ssh configuration on Jenkins-Master and Jenkins-Agent node
 $ sudo nano /etc/ssh/sshd_config
-$ sudo service sshd reload
+  --uncomment--> PubkeyAuthentication yes
+             --> AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+$ sudo service ssh reload
+
+## key generation on the Jenkins-Master node
 $ ssh-keygen OR $ ssh-keygen -t ed25519
 $ cd .ssh
+##Copy the Jenkins-Master public key and paste to Jenkins-Agent- authorized file
+
+===============================================================================================================================================================
+## Add port 8080 in the Jenkins-Master-->inbound rule
+## Copy the Jenkins_Master public Ip and open in browser with port number 8080
+
+##creating nodes
+  Manage jenkins->nodes->built-in-nodes->configure-> under configure change number executors 2 to 0->save
+  Manage jenkins->nodes->built-in-nodes->configure-> create new node->Jenkins-Agent->Permanent Agent->create
+    name->Jenkins-Agent
+    number of executors->2
+    remote root directory->/home/ubuntu
+    labels->Jenkins-Agent
+    Launch method- launch via ssh
+      host-copy Jenkins-Agent private IP
+      credentials->add->SSH username with private key
+                    id->Jenkins-Agent
+                    username->ubuntu
+                    privatkey->enter directly private key from Jenkins-Master->add
+      Host Key Verification Strategy-> Non verifying Verification Strategy
+   save
+
+##After the above node configuration create 'test' pipeline with 'Hello-world' and build pipeline. 
+      build success-connectivity successful
+    
 
 ============================================================= Install and Configure the SonarQube =============================================================
 ## Update Package Repository and Upgrade Packages
