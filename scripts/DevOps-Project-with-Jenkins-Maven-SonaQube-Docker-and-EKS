@@ -189,6 +189,12 @@ $ sudo vim /etc/systemd/system/sonar.service
 ## Watch log files and monitor for startup
      $ sudo tail -f /opt/sonarqube/logs/sonar.log
 
+##edit inbound rules of SonarQube instance
+  add port 9000
+  copy public IP of SonarQube access it through browser
+    sonarQube username-admin
+    sonarQube password-admin
+
 ============================================================= Setup Bootstrap Server for eksctl and Setup Kubernetes using eksctl =============================================================
 ## Install AWS Cli on the above EC2
 Refer--https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
