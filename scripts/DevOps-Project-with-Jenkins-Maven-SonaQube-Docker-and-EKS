@@ -1,4 +1,4 @@
-create  2 instance
+create  2 instance t2.micro, 20 gb storage
   # Jenkins-Master
   #Jenkins-Agent
 Connect to MobaXterm
@@ -19,8 +19,8 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-sudo apt-get update
-sudo apt-get install jenkins
+$sudo apt-get update
+$sudo apt-get install jenkins
 $ sudo systemctl enable jenkins       //Enable the Jenkins service to start at boot
 $ sudo systemctl start jenkins        //Start Jenkins as a service
 $ systemctl status jenkins
@@ -62,9 +62,44 @@ $ cd .ssh
 
 ##After the above node configuration create 'test' pipeline with 'Hello-world' and build pipeline. 
       build success-connectivity successful
-    
+
+##Integrate maven to jenkins and add github credentials to Jenkins.
+#install plugins
+Manage jenkins->avaialble plugins->
+    Maven Integration
+    Pipeline maven integration
+    eclipse temurin installer
+Manage jenkins->tools->
+    maven installation->add maven->maven3
+                        install automatically->use default version
+    jdk installations->name ->Java17
+                       install automatically->add installer->
+                                              Install from adoptium.net->jdk-17.0.5+8
+apply->save
+#add github credentilas
+Manage jenkins->credentails->add credentials->
+                username->github username
+                password->github classic API token
+                id->github
+                description->github
+===============================================================================================================================================================
+##Create pipeline script
+use the register app from github
+  cleanup workspace, checkout from SCM, build, test
+
+create pipeline->register-app-ci
+check the checkbox->discard old buils
+                  ->max of days to keep build-5days
+                  ->pipeline->pipeline script from SCM
+                      repository url->register-app github url
+                      credentials-select github
+                      branch-main
+                      Scriptpath-Jenkinsfile
+apply->save->build the project
 
 ============================================================= Install and Configure the SonarQube =============================================================
+create SonarQube instance with soecication t3.medium, 20 gb storage
+connect to MobaXterm
 ## Update Package Repository and Upgrade Packages
     $ sudo apt update
     $ sudo apt upgrade
