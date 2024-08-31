@@ -245,6 +245,19 @@ $ sudo vim /etc/systemd/system/sonar.service
   # add stage to the pipeline script
         'Quality gate' stage
              build the pipeline
+
+================================================================================================================================================================================================
+##Build and push Docker Image using pipeline script
+  #Install plugins
+  Go to jenkins->manage jenkins-> plugins->avaialable plugins->
+                                          Docker
+                                          Docker commons
+                                          Docker API
+                                          Docker-build-step
+                                          CloudBeers docker Build and publish
+          restart jenkins
+
+  #
  
 ===============================================================================================================================================================================================
 
