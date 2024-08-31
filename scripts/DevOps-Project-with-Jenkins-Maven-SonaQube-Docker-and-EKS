@@ -257,7 +257,11 @@ $ sudo vim /etc/systemd/system/sonar.service
                                           CloudBeers docker Build and publish
           restart jenkins
 
-  #
+  #Add DockerHub crdentials 
+    Go to jenkins dashboard->Manage jenkins-> credentials->global menu->add
+                            kind-> username with password
+                                  username-nirosha
+                                  password->
  
 ===============================================================================================================================================================================================
 
