@@ -216,10 +216,36 @@ $ sudo vim /etc/systemd/system/sonar.service
                  click on restart checkbox-jenkins restart
     you can verify downloaded plugins once you login back.
 
-  # Hide warnings
-    Jenkins right corner
- 
+  #Hide warnings
+    Jenkins right corner->configure which these...button
+                        ->Hidden security warnings-> uncheck the box->apply and save
 
+  #add sonarqube server to jenkins
+    Manage jenkins->system->SonarQube installation->Add Sonarqube
+                    name->sonarqube-server
+                    url->http://private IP of sonarqube:9000
+                    server authentication token-> jenkins-sonarqube-token(you created)
+    apply->save
+
+  # Add sonarqube scanner to jenkins
+    Manage jenkins->tools->Sonarqube scanner installation->add sonarqube scanner
+                  Name->sonarqube-scanner
+                  install automatically
+          apply->save
+
+  # add stage to the pipeline script
+        'Sonarqube Analysis' stage
+            build the pipeline
+
+ # Create sonar webhook
+   Go to sonarqube homepage-> Admiistartor menu-> Configuration-> webhook->create
+                            name->sonarqube-webhook
+                            url->http://private Ip of jenkins master:8080/sonarqube-webhook/
+
+  # add stage to the pipeline script
+        'Quality gate' stage
+             build the pipeline
+ 
 ===============================================================================================================================================================================================
 
 
