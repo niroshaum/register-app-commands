@@ -270,17 +270,27 @@ $ sudo vim /etc/systemd/system/sonar.service
          add the environment variables- give your docker username and docker password give docker id(dockerhub)
              build the pipeline
 
-  #  # add stage to the pipeline script
-        'Build & Push Docker Image' stage
-         add the environment variables- give your docker username and docker password give docker id(dockerhub)
+  # add stage to the pipeline script
+        'Trivy scan' stage--give your image name and the github username
              build the pipeline
 
- 
+  # add stage to the pipeline script
+        'Clean up aetifacts' stage
+             build the pipeline 
 ===============================================================================================================================================================================================
 
 
 
 ============================================================= Setup Bootstrap Server for eksctl and Setup Kubernetes using eksctl =============================================================
+##Create ec2 instance
+  EKS-BootStrap-Server->t2.micro, 10gb storage, existing pem key
+
+##configure in MobaXterm
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo nano /etc/hostname
+$ sudo init 6
+
 ## Install AWS Cli on the above EC2
 Refer--https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 $ sudo su
@@ -289,11 +299,6 @@ $pwd
 $ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 $ apt install unzip,   $ unzip awscliv2.zip
 $ sudo ./aws/install
-         OR
-$ sudo yum remove -y aws-cli
-$ pip3 install --user awscli
-$ sudo ln -s $HOME/.local/bin/aws /usr/bin/aws
-
 $ aws --version
 
 ## Installing kubectl
@@ -311,6 +316,12 @@ $ cd /tmp
 $ ll [check eksctl is in executable mode or not]
 $ sudo mv /tmp/eksctl /bin
 $ eksctl version
+
+## Create IAM role
+  Go to IAM->roles->create role->AWS service            
+                              -> under service or usecase select->EC2->next->administrator access->role name->eksctl-role->ceate role
+  Go to ec2 EKS-BootStrap-Server
+          actions->security->modify IAM role->select role->update
 
 ## Setup Kubernetes using eksctl
 Refer--https://github.com/aws-samples/eks-workshop/issues/734
