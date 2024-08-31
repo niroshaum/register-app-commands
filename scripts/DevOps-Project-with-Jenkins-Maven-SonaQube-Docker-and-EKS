@@ -260,8 +260,21 @@ $ sudo vim /etc/systemd/system/sonar.service
   #Add DockerHub crdentials 
     Go to jenkins dashboard->Manage jenkins-> credentials->global menu->add
                             kind-> username with password
-                                  username-nirosha
-                                  password->
+                                  username->nirosha
+                                  password-> Login to dockerhub dashboard->myprofile->Account settings->security->Personal access token-> generate new token(give read,write,delete permission)
+                                  id->dockerhub
+                                  description->dockerhub
+
+  # add stage to the pipeline script
+        'Build & Push Docker Image' stage
+         add the environment variables- give your docker username and docker password give docker id(dockerhub)
+             build the pipeline
+
+  #  # add stage to the pipeline script
+        'Build & Push Docker Image' stage
+         add the environment variables- give your docker username and docker password give docker id(dockerhub)
+             build the pipeline
+
  
 ===============================================================================================================================================================================================
 
