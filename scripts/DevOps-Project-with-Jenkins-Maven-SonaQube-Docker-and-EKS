@@ -350,15 +350,22 @@ $ kubectl get nodes
 5 ) Expose argocd-server to external world by craeting loadBalancer
     $ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
-6 ) Wait about 2 minutes for the LoadBalancer creation
+6 ) Wait about 3 minutes for the LoadBalancer creation
     $ kubectl get svc -n argocd
 
 7 ) (extract)Get pasword and decode it.
     $ kubectl get secret argocd-initial-admin-secret -n argocd -o yaml
+    you will get password decode using below command
     $ echo WXVpLUg2LWxoWjRkSHFmSA== | base64 --decode
+    DNS name for the load balancer created for argocd cluster-copy that ans paste in browser
+      login username-admin
+            password- decoded password
+      after login-> go to userinfo->update password->new password
+                    then logout and login with new password
 
 ## Add EKS Cluster to ArgoCD
 9 ) login to ArgoCD from CLI
+      //url of argocd cluster
     $ argocd login a2255bb2bb33f438d9addf8840d294c5-785887595.ap-south-1.elb.amazonaws.com --username admin
 
 10 ) 
@@ -368,18 +375,46 @@ $ kubectl get nodes
      $ kubectl config get-contexts
 
 12 ) Add above EKS cluster to ArgoCD with below command
-     $ argocd cluster add i-08b9d0ff0409f48e7@virtualtechbox-cluster.ap-south-1.eksctl.io --name virtualtechbox-eks-cluster
+     $ argocd cluster add i-08b9d0ff0409f48e7@nirosha-cluster.ap-south-1.eksctl.io --name nirosha-eks-cluster
 
 13) check the added cluster
     $ argocd cluster list
 
+##Get the gitops repository from the github- connect to argocd
+ Go to argo cd dashboard->settings->connect repo->via https
+                                                  type->git
+                                                  project->default
+                                                  give the reposistory url
+                                                  username->github username
+                                                  password->github personal access token 
+                                    click on connect
+  deployment yaml file image name and version should be same as dockerhub image name
+
+##connect application to argocd dashboard
+In the Argocd dashboard click new item
+  application name->register-app
+  project name->default
+  sysnc policy->automatic
+    tick 2options- prune resources & self heal
+  select the repository url which you cretaed just ago
+  path->./
+  Destination->select EKS cluster from dropdown
+  namespace-default
+  click on create.
+  
 14) to check running pods
     kubectl get pods
 
 15 ) service details of the service created in default namespace  
     $ kubectl get svc
+      copy the DNS name:8080/webapp--->you can view the application
+
+##create pipeline with name->gitops-register-app-cd
+
+
 ============================================================= Cleanup =============================================================
 $ kubectl get all
-$ kubectl delete deployment.apps/virtualtechbox-regapp       //it will delete the deployment
-$ kubectl delete service/virtualtechbox-service              //it will delete the service
-$ eksctl delete cluster virtualtechbox --region ap-south-1     OR    eksctl delete cluster --region=ap-south-1 --name=virtualtechbox-cluster      //it will delete the EKS cluster
+$ kubectl delete deployment.apps/nirosha-regapp       //it will delete the deployment
+$ kubectl delete service/nirosha-service              //it will delete the service
+$ eksctl delete cluster nirosha --region ap-south-1     OR    eksctl delete cluster --region=ap-south-1 --name=nirosha-cluster      //it will delete the EKS cluster
+M
