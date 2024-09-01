@@ -410,6 +410,52 @@ In the Argocd dashboard click new item
       copy the DNS name:8080/webapp--->you can view the application
 
 ##create pipeline with name->gitops-register-app-cd
+  tick> discard old builds->max of build to keep->4
+  tick->this project is parameterised
+                name-IMAGE_TAG
+  tick->trigger builda remotely
+        authentication token-gitops-token
+  select pipeline script from SCM
+        SCM->git->select gitops repository url
+                  credentials->gituhub credentials
+             branch-main
+  apply->save
+
+## add stage to the jenkins fiel register-app repo
+        'Trigger CD pipeline' stage
+            change DNS name here-> copy your dns name->check ij jenkins master node
+          # JENKINS-API-TOKEN
+              jenkins username:${JENKINS-API-TOKEN}
+              Go to jenkins-Dashboard->myprofile->configure->API Token->add new token->generate->cpoy the token paste in notepad
+              Go to manage jenkins->credentials->add credentials->
+                                                ->secret text->paste the secret text which you generated just now
+                                                ->ID->JENKINS-API-TOKEN
+                                                ->desc->JENKINS-API-TOKEN->create
+              add JENKINS-API-TOKEN in the environment variable block 
+## create Jenkins file in thegitops-register-app repo 
+    # add stage to the pipeline script
+        'cleanup workspace' stage
+
+    # add stage to the pipeline script
+        'Checkout from SCM' stage
+             ->add your gitops url
+    
+    # add stage to the pipeline script
+        'Update the deployment tags' stage
+
+    # add stage to the pipeline script
+        'push deployment file to git' stage
+              ->change to your github username
+              ->change to your github email id
+              ->change to your gitops repo
+
+##set the trigger in jenkins CI job
+ Jenkins dasjboard->register-app-ci->configure
+                    ->under  build trigge->poll SCM-> * * * * *
+                  ->apply->save
+
+##update the code using git bash and verify the result.
+
 
 
 ============================================================= Cleanup =============================================================
